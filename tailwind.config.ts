@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        arcade: ['"Press Start 2P"', 'cursive'],
-        mono: ['"Space Mono"', 'monospace'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'monospace'],
       },
       colors: {
         border: "hsl(var(--border))",
