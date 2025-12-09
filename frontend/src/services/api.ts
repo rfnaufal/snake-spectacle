@@ -87,12 +87,12 @@ export const api = {
   auth: {
     async login(credentials: AuthCredentials): Promise<ApiResponse<User>> {
       await delay(500);
-      
+
       const user = users.get(credentials.email);
       if (!user || user.password !== credentials.password) {
         return { data: null, error: 'Invalid email or password', success: false };
       }
-      
+
       const { password, ...userData } = user;
       currentUser = userData;
       localStorage.setItem('snakeUser', JSON.stringify(userData));
@@ -101,15 +101,15 @@ export const api = {
 
     async signup(credentials: AuthCredentials): Promise<ApiResponse<User>> {
       await delay(500);
-      
+
       if (users.has(credentials.email)) {
         return { data: null, error: 'Email already registered', success: false };
       }
-      
+
       if (!credentials.username) {
         return { data: null, error: 'Username is required', success: false };
       }
-      
+
       const newUser: User & { password: string } = {
         id: crypto.randomUUID(),
         username: credentials.username,
@@ -118,7 +118,7 @@ export const api = {
         highScore: 0,
         createdAt: new Date().toISOString().split('T')[0],
       };
-      
+
       users.set(credentials.email, newUser);
       const { password, ...userData } = newUser;
       currentUser = userData;
@@ -135,13 +135,13 @@ export const api = {
 
     async getCurrentUser(): Promise<ApiResponse<User>> {
       await delay(100);
-      
+
       const stored = localStorage.getItem('snakeUser');
       if (stored) {
         currentUser = JSON.parse(stored);
         return { data: currentUser, error: null, success: true };
       }
-      
+
       return { data: null, error: 'Not authenticated', success: false };
     },
   },
@@ -150,22 +150,22 @@ export const api = {
   leaderboard: {
     async getAll(mode?: GameMode): Promise<ApiResponse<LeaderboardEntry[]>> {
       await delay(300);
-      
+
       let entries = [...mockLeaderboard];
       if (mode) {
         entries = entries.filter(e => e.mode === mode);
       }
-      
+
       return { data: entries.sort((a, b) => b.score - a.score), error: null, success: true };
     },
 
     async submitScore(score: number, mode: GameMode): Promise<ApiResponse<LeaderboardEntry>> {
       await delay(300);
-      
+
       if (!currentUser) {
         return { data: null, error: 'Must be logged in to submit score', success: false };
       }
-      
+
       const entry: LeaderboardEntry = {
         id: crypto.randomUUID(),
         username: currentUser.username,
@@ -173,9 +173,9 @@ export const api = {
         mode,
         date: new Date().toISOString().split('T')[0],
       };
-      
+
       mockLeaderboard.push(entry);
-      
+
       // Update user high score
       if (score > currentUser.highScore) {
         currentUser.highScore = score;
@@ -185,7 +185,7 @@ export const api = {
         }
         localStorage.setItem('snakeUser', JSON.stringify(currentUser));
       }
-      
+
       return { data: entry, error: null, success: true };
     },
   },
@@ -201,11 +201,11 @@ export const api = {
       await delay(100);
       const players = generateMockLivePlayers();
       const player = players.find(p => p.id === id);
-      
+
       if (!player) {
         return { data: null, error: 'Player not found', success: false };
       }
-      
+
       return { data: player, error: null, success: true };
     },
 
@@ -213,13 +213,13 @@ export const api = {
     async getUpdatedState(player: LivePlayer, gridSize: number): Promise<LivePlayer> {
       const directions = ['UP', 'DOWN', 'LEFT', 'RIGHT'] as const;
       const head = player.snake[0];
-      
+
       // Simple AI: move towards food with some randomness
       let dx = player.food.x - head.x;
       let dy = player.food.y - head.y;
-      
+
       let newHead: Position;
-      
+
       if (Math.random() > 0.3) {
         // Move towards food
         if (Math.abs(dx) > Math.abs(dy)) {
@@ -237,25 +237,25 @@ export const api = {
           case 'RIGHT': newHead = { x: head.x + 1, y: head.y }; break;
         }
       }
-      
+
       // Wrap around for passthrough mode
       if (player.mode === 'passthrough') {
         newHead.x = (newHead.x + gridSize) % gridSize;
         newHead.y = (newHead.y + gridSize) % gridSize;
       }
-      
+
       // Check if ate food
       const ateFood = newHead.x === player.food.x && newHead.y === player.food.y;
-      
+
       const newSnake = [newHead, ...player.snake];
       if (!ateFood) {
         newSnake.pop();
       }
-      
-      const newFood = ateFood 
+
+      const newFood = ateFood
         ? { x: Math.floor(Math.random() * gridSize), y: Math.floor(Math.random() * gridSize) }
         : player.food;
-      
+
       return {
         ...player,
         snake: newSnake,
