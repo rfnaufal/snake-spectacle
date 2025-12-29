@@ -13,8 +13,8 @@ The easiest way to run the full application (Frontend + Backend + PostgreSQL) is
 ```bash
 docker-compose up --build
 ```
-- **Application**: [http://localhost:8000](http://localhost:8000) (Frontend + API)
-- **API Documentation**: [http://localhost:8000/api/docs](http://localhost:8000/api/docs)
+- **Application**: [http://localhost:8080](http://localhost:8080) (Frontend + API)
+- **API Documentation**: [http://localhost:8080/api/docs](http://localhost:8080/api/docs)
 
 ## Local Setup (Development)
 

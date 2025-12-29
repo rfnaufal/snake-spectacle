@@ -45,9 +45,7 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-@app.get("/")
-def read_root():
-    return {"message": "welcome to backend snake game"}
+
 
 
 # CORS setup
