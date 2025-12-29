@@ -1,0 +1,17 @@
+{
+    "name": "snake-spectacle-root",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "backend": "cd backend && uv run uvicorn app.main:app --reload",
+        "frontend": "cd frontend && npm run dev",
+        "dev": "concurrently \"npm run backend\" \"npm run frontend\" --kill-others --prefix-colors \"blue,green\"",
+        "backend:test": "make test-backend",
+        "frontend:test": "cd frontend && npm run test",
+        "test": "concurrently \"npm run backend:test\" \"npm run frontend:test\" --prefix-colors \"blue,green\"",
+        "install:all": "npm install && cd frontend && npm install && cd .. && make install-backend"
+    },
+    "devDependencies": {
+        "concurrently": "^9.1.0"
+    }
+}
