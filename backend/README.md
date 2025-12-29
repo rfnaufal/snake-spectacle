@@ -4,10 +4,19 @@ This is the FastAPI backend for the Snake Spectacle game.
 
 ## Prerequisites
 
-- [uv](https://github.com/astral-sh/uv) installed.
-- (Optional) PostgreSQL if you prefer it over SQLite.
+- [uv](https://github.com/astral-sh/uv) installed (for local dev).
+- [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) (for containerized deployment).
 
-## Setup
+## Quick Start (Docker)
+The easiest way to run the full application (Frontend + Backend + PostgreSQL) is via Docker Compose.
+
+```bash
+docker-compose up --build
+```
+- **Application**: [http://localhost:8000](http://localhost:8000) (Frontend + API)
+- **API Documentation**: [http://localhost:8000/api/docs](http://localhost:8000/api/docs)
+
+## Local Setup (Development)
 
 Initialize the environment and install dependencies:
 
